@@ -39,7 +39,7 @@ const createUser = (req, res, next) => { // Создать юзера (реги�
 
 const updateUserInfo = (req, res, next) => { // Обновить инфо юзера;
   User.findByIdAndUpdate(req.user._id,
-    { name: req.body.name }, { runValidators: true })
+    { name: req.body.name, email: req.body.email }, { runValidators: true })
     .then((user) => {
       if (!user) {
         throw new BadRequest('Ошибка при обновлении информации пользователя');

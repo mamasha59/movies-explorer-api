@@ -5,11 +5,7 @@ module.exports.validationSignUp = celebrate({ // ---валидация при р
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(
-      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]+\.[a-zA-Z0-9()]+([-a-zA-Z0-9()@:%_\\+.~#?&/=#]*)/,
-    ),
+    name: Joi.string().required().min(2).max(30),
   }),
 });
 
@@ -20,9 +16,10 @@ module.exports.validationSignin = celebrate({ // --- валидация при �
   }),
 });
 
-module.exports.usersMeValidation = celebrate({
+module.exports.usersMeValidation = celebrate({ // ---обновление инфы валдиция
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().email(),
   }),
 });
 
@@ -36,7 +33,7 @@ const method = (value) => {
   }
 };
 
-module.exports.postMoviesValidation = celebrate({
+module.exports.postMoviesValidation = celebrate({ // --валидация при создании карточки с фильмом
   body: Joi.object().keys({
     country: Joi.string().required().min(2).max(30),
     director: Joi.string().required().min(2).max(30),
@@ -55,6 +52,6 @@ module.exports.postMoviesValidation = celebrate({
 
 module.exports.deleteMoviesIdValidation = celebrate({
   params: Joi.object().keys({
-    cardId: Joi.string().length(24).hex(),
+    movieId: Joi.string().length(24).hex(),
   }),
 });
