@@ -2,7 +2,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const helmet = require('helmet');
 const limiter = require('./utils/rateLimit'); // ---импорт лимита айпи
 const { requestLogger, errorLogger } = require('./middlewares/logger'); // --собирает лог ошибок
 const router = require('./routes/index'); // --импорт роутов
@@ -10,7 +9,7 @@ const { DATA_BASE, PORT } = require('./utils/configEnv');
 const ErrorsAll = require('./middlewares/commonError');
 
 const app = express();
-app.use(helmet());
+
 mongoose.connect(DATA_BASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
