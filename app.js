@@ -1,17 +1,17 @@
 /* eslint-disable linebreak-style */
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-
+const helmet = require('helmet');
 const limiter = require('./utils/rateLimit'); // ---импорт лимита айпи
 const { requestLogger, errorLogger } = require('./middlewares/logger'); // --собирает лог ошибок
 const router = require('./routes/index'); // --импорт роутов
+const { DATA_BASE, PORT } = require('./utils/configEnv');
+const ErrorsAll = require('./middlewares/commonError');
 
-const { PORT = 3000 } = process.env;
 const app = express();
-
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+app.use(helmet());
+mongoose.connect(DATA_BASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -44,18 +44,7 @@ app.use(router); // --подключаем роуты отдельным фай�
 app.use(errorLogger);
 app.use(errors());
 
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => { //  если у ошибки нет статуса, выставляем 500
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      // проверяем статус и выставляем сообщение в зависимости от него
-      message: statusCode === 500
-        ? `На сервере произошла ошибка${err}`
-        : message,
-    });
-});
+app.use(ErrorsAll); // ---централизованный обработчик ошибок
 
 app.listen(PORT, () => (
   // eslint-disable-next-line no-console

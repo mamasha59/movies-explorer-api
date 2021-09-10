@@ -37,16 +37,15 @@ module.exports.postMoviesValidation = celebrate({ // --валидация при
   body: Joi.object().keys({
     country: Joi.string().required().min(2).max(30),
     director: Joi.string().required().min(2).max(30),
-    duration: Joi.string().required().min(2).max(30),
+    duration: Joi.string().required().max(30),
     year: Joi.string().required().min(2).max(30),
     description: Joi.string().required().min(2).max(30),
     image: Joi.string().required().custom(method),
     trailer: Joi.string().required().custom(method),
     thumbnail: Joi.string().required().custom(method),
-    owner: Joi.string().required().min(2).max(30),
-    movieId: Joi.string().required().min(2).max(30),
-    nameRU: Joi.string().required().min(2).max(30),
-    nameEN: Joi.string().required().min(2).max(30),
+    movieId: Joi.string().required().max(30),
+    nameRU: Joi.string().required().min(1).max(30),
+    nameEN: Joi.string().required().min(1).max(30),
   }),
 });
 

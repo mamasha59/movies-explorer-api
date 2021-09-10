@@ -5,8 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequest = require('../errors/bad-request');
 const Unauthorized = require('../errors/unauthorized');
 const ConflictError = require('../errors/conflict-error');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_SECRET } = require('../utils/configEnv');
 
 const getMe = (req, res, next) => { // Получить информацию о себе
   User.findById(req.user._id)
@@ -56,7 +55,7 @@ const login = (req, res, next) => { // --авторизация
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        JWT_SECRET,
         { expiresIn: '7d' },
       );
       return res.send({ token });
