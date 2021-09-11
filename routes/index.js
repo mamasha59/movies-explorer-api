@@ -3,7 +3,7 @@ const usersRouter = require('./users');
 const cardsRouter = require('./movie');
 const { createUser, login } = require('../controllers/users');
 const { validationSignin, validationSignUp } = require('../middlewares/validationCelebrate');
-
+const { RESOURCE_NOT_FOUND_ERR } = require('../utils/errorsText');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-err');
 
@@ -16,7 +16,7 @@ router.use('/', usersRouter);
 router.use('/', cardsRouter);
 
 router.use('/*', () => { // --- если перейти по несуществующему порту
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
+  throw new NotFoundError(RESOURCE_NOT_FOUND_ERR);
 });
 
 module.exports = router;

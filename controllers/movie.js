@@ -2,12 +2,22 @@ const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequest = require('../errors/bad-request');
 const Forbidden = require('../errors/forbidden');
+const {
+  VALIDATION_ERROR,
+  CAST_ERROR,
+  INVALID_DATA,
+  FILE_NOT_FOUND,
+  MOVIE_NOT_FOUND,
+  CANNOT_DELETE_OTHER_CARD,
+  SUCCESS_DELETE,
+  NOT_EXIST_ID,
+} = require('../utils/errorsText');
 
 const getCards = (req, res, next) => { // Получить список всех карточек
   Movie.find({})
     .then((cards) => {
       if (!cards) {
-        throw new NotFoundError('Запрашиваемый файл не найден');
+        throw new NotFoundError(FILE_NOT_FOUND);
       }
       res.status(200).send(cards);
     })
@@ -36,13 +46,13 @@ const createCard = (req, res, next) => { // Создать карточку
   }) // --- создаем каточку по данным из боди
     .then((card) => {
       if (!card) {
-        throw new BadRequest('Данные не прошли валидацию');
+        throw new BadRequest(INVALID_DATA);
       }
       res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new BadRequest('Что-то не так с запросом.'); // ---- ошибка 400
+      if (err.name === VALIDATION_ERROR) {
+        throw new BadRequest(INVALID_DATA); // ---- ошибка 400
       }
       next(err);
     })
@@ -54,17 +64,17 @@ const deleteCard = (req, res, next) => { // Удалить карточку
   Movie.findById(req.params.movieId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Карточка не найдена');
+        throw new NotFoundError(MOVIE_NOT_FOUND);
       }
       if (card.owner.toString() !== owner) {
-        throw new Forbidden('Нельзя удалить чужую карточку - ошибка доступа');
+        throw new Forbidden(CANNOT_DELETE_OTHER_CARD);
       }
       Movie.findByIdAndRemove(req.params.movieId)
-        .then(() => res.status(200).send({ message: 'Карточка удалена' }));
+        .then(() => res.status(200).send(SUCCESS_DELETE));
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new NotFoundError('Id карточки не валидный'));
+      if (err.name === CAST_ERROR) {
+        next(new NotFoundError(NOT_EXIST_ID));
       }
       next(err);
     });

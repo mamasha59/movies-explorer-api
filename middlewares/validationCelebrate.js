@@ -1,5 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
+const { BAD_URL } = require('../utils/errorsText');
 
 module.exports.validationSignUp = celebrate({ // ---валидация при регисттрации
   body: Joi.object().keys({
@@ -29,7 +30,7 @@ const method = (value) => {
     return value;
   // eslint-disable-next-line no-else-return
   } else {
-    throw new Error('URL validation err');
+    throw new Error(BAD_URL);
   }
 };
 

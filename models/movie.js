@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 const mongoose = require('mongoose');
+const { BAD_URL } = require('../utils/errorsText');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -36,39 +37,36 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
         return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
       },
-      message: (props) => `Ошибка в ссылке ${props.value}`,
+      message: () => BAD_URL,
     },
   },
   trailer: { // --ссылка на трейлер фильма
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
         return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
       },
-      message: (props) => `Ошибка в ссылке ${props.value}`,
+      message: () => BAD_URL,
     },
   },
   thumbnail: {
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
         return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
       },
-      message: (props) => `Ошибка в ссылке ${props.value}`,
+      message: () => BAD_URL,
     },
 
   },

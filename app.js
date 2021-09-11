@@ -8,6 +8,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger'); // --с�
 const router = require('./routes/index'); // --импорт роутов
 const { DATA_BASE, PORT } = require('./utils/configEnv');
 const ErrorsAll = require('./middlewares/commonError');
+const { CRASH_TEST_ERROR } = require('./utils/errorsText');
 
 const app = express();
 app.use(helmet());
@@ -35,7 +36,7 @@ app.use(limiter); // ---защита от ддос - ограничение ай
 
 app.get('/crash-test', () => { // --краш тест
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error(CRASH_TEST_ERROR);
   }, 0);
 });
 
