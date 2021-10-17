@@ -15,7 +15,7 @@ router.use(auth); // --ниже порты защищены авторизаци
 router.use('/', usersRouter);
 router.use('/', cardsRouter);
 
-router.use('/*', () => { // --- если перейти по несуществующему порту
+router.use('*', () => { // --- если перейти по несуществующему порту
   throw new NotFoundError(RESOURCE_NOT_FOUND_ERR);
 });
 

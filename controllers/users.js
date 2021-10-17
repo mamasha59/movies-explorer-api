@@ -61,7 +61,6 @@ const updateUserInfo = (req, res, next) => { // Обновить инфо юзе
 
 const login = (req, res, next) => { // --авторизация
   const { email, password } = req.body;
-
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(

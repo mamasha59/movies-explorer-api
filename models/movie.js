@@ -6,37 +6,26 @@ const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   director: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   duration: {
     type: Number,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   year: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   description: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   image: { // --ссылка на постер к фильму
     type: String,
     required: true,
-    minlength: 2,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
@@ -48,7 +37,6 @@ const movieSchema = new mongoose.Schema({
   trailer: { // --ссылка на трейлер фильма
     type: String,
     required: true,
-    minlength: 2,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
@@ -60,7 +48,6 @@ const movieSchema = new mongoose.Schema({
   thumbnail: {
     type: String,
     required: true,
-    minlength: 2,
     validate: {
       validator(v) {
         // eslint-disable-next-line no-useless-escape
@@ -72,25 +59,20 @@ const movieSchema = new mongoose.Schema({
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
   nameEN: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 30,
   },
 });
 
