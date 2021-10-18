@@ -26,8 +26,15 @@ mongoose.connect(MONGO_URL, {
 
 // мидлвэры
 app.use(requestLogger);
-app.use(cors({ credentials: true, origin: "http://moviesbyme.nomoredomains.club" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.options("*", cors());
+
+app.use((req, res, next) => {
+  res.header("Acces-Control-Allow-Origin", "*");
+  res.header("Acces-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(limiter);
 app.use(cookieParser());
 app.use(bodyParser.json());
