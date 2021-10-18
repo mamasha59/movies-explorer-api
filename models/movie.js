@@ -1,15 +1,14 @@
-/* eslint-disable linebreak-style */
-const mongoose = require('mongoose');
-const { BAD_URL } = require('../utils/errorsText');
+const mongoose = require("mongoose");
+const validator = require("validator");
 
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
-    required: true,
+    require: true,
   },
   director: {
     type: String,
-    required: true,
+    require: true,
   },
   duration: {
     type: Number,
@@ -17,63 +16,56 @@ const movieSchema = new mongoose.Schema({
   },
   year: {
     type: String,
-    required: true,
+    require: true,
   },
   description: {
     type: String,
-    required: true,
+    require: true,
   },
-  image: { // --ссылка на постер к фильму
+  image: {
     type: String,
-    required: true,
+    require: true,
     validate: {
-      validator(v) {
-        // eslint-disable-next-line no-useless-escape
-        return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
+      validator(data) {
+        return validator.isURL(data);
       },
-      message: () => BAD_URL,
     },
   },
-  trailer: { // --ссылка на трейлер фильма
+  trailer: {
     type: String,
-    required: true,
+    require: true,
     validate: {
-      validator(v) {
-        // eslint-disable-next-line no-useless-escape
-        return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
+      validator(data) {
+        return validator.isURL(data);
       },
-      message: () => BAD_URL,
     },
   },
   thumbnail: {
     type: String,
-    required: true,
+    require: true,
     validate: {
-      validator(v) {
-        // eslint-disable-next-line no-useless-escape
-        return /^https?:\/\/(www\.)?([a-zA-Z0-9\-])+\.([a-zA-Z])+\/?([a-zA-Z0-9\-\._~:\/\?#\[\]@!\$&’\(\)\*\+,;=]+)/.test(v);
+      validator(data) {
+        return validator.isURL(data);
       },
-      message: () => BAD_URL,
     },
-
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
     required: true,
   },
   movieId: {
     type: Number,
-    required: true,
+    require: true,
   },
   nameRU: {
     type: String,
-    required: true,
+    require: true,
   },
   nameEN: {
     type: String,
-    required: true,
+    require: true,
   },
 });
 
-module.exports = mongoose.model('movie', movieSchema);
+module.exports = mongoose.model("movie", movieSchema);

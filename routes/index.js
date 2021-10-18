@@ -1,22 +1,42 @@
-const router = require('express').Router();
-const usersRouter = require('./users');
-const cardsRouter = require('./movie');
-const { createUser, login } = require('../controllers/users');
-const { validationSignin, validationSignUp } = require('../middlewares/validationCelebrate');
-const { RESOURCE_NOT_FOUND_ERR } = require('../utils/errorsText');
-const auth = require('../middlewares/auth');
-const NotFoundError = require('../errors/not-found-err');
+const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
+const userRoutes = require("./users");
+const movieRoutes = require("./movies");
+const NotFoundError = require("../errors/not-found-err"); // 404
+const auth = require("../middlewares/auth");
+const { createUser, login, logout } = require("../controllers/users");
 
-router.post('/signin', validationSignin, login); // --роутер авторизации с валидацией
+// роуты регистрации и авторизации
+router.post(
+  "/signup",
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().required().min(2).max(30),
+      email: Joi.string().required().email(),
+      password: Joi.string().min(8).required(),
+    }),
+  }),
+  createUser
+);
 
-router.post('/signup', validationSignUp, createUser);// --роутер регистариции с валидацией
+router.post(
+  "/signin",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().min(8).required(),
+    }),
+  }),
+  login
+);
 
-router.use(auth); // --ниже порты защищены авторизацией
-router.use('/', usersRouter);
-router.use('/', cardsRouter);
+router.post("/signout", logout);
+router.use(auth);
+router.use("/users", userRoutes);
+router.use("/movies", movieRoutes);
 
-router.use('*', () => { // --- если перейти по несуществующему порту
-  throw new NotFoundError(RESOURCE_NOT_FOUND_ERR);
+router.use("*", () => {
+  throw new NotFoundError("Запрашиваемый ресурс не найден");
 });
 
 module.exports = router;
