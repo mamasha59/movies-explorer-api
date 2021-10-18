@@ -69,7 +69,7 @@ const deleteCard = (req, res, next) => { // Удалить карточку
       if (card.owner.toString() !== owner) {
         throw new Forbidden(CANNOT_DELETE_OTHER_CARD);
       }
-      Movie.findByIdAndRemove(req.params.movieId)
+      Movie.remove(req.params.movieId)
         .then(() => res.status(200).send(SUCCESS_DELETE));
     })
     .catch((err) => {

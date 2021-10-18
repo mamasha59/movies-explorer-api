@@ -1,11 +1,20 @@
-/* eslint-disable linebreak-style */
-const router = require('express').Router();
-const { getMe, updateUserInfo } = require('../controllers/users');
+const router = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
 
-const { usersMeValidation } = require('../middlewares/validationCelebrate');
+const { getMe, updateProfile } = require("../controllers/users");
 
-router.get('/users/me', getMe); // --возвращает информацию о пользователе (email и имя)
+// /users
+router.get("/me", getMe);
 
-router.patch('/users/me', usersMeValidation, updateUserInfo); // --обновляет информацию о пользователе (email и имя)
+router.patch(
+  "/me",
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().required().min(2).max(30),
+      email: Joi.string().required().email(),
+    }),
+  }),
+  updateProfile,
+);
 
 module.exports = router;
